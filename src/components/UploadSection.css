@@ -1,0 +1,70 @@
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    text-align: center;
+    color: white;
+    gap: 40px;
+ }
+
+  
+  .input {
+    position: relative;
+    width: 100%;
+
+  }
+  
+  .input input {
+    border: none;
+    background-color: #4E4E4E;
+    outline: none;
+    width: 100%;
+    padding: 20px;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 15px;
+  }
+  
+  .input button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ffcc00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+  
+  input::placeholder {
+    color: #fff;
+  }
+  
+@media (max-width: 900px) {
+
+    .center img {
+        width: 300px;
+    }
+  
+    .input {
+        width: 90%;
+    }
+  
+    .input input {
+        width: 95%;
+    }
+
+    .input #pdf-file{
+        border-radius: 20px;
+    }
+  
+    .input img {
+        width: 10%;
+    }
+}
+  
