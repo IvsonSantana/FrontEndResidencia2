@@ -24,30 +24,30 @@ const Navbar = () => {
       {/* Menu lateral */}
       <div className={`left ${isMenuActive ? 'active' : ''}`}>
         <div className="top">
-          <a className="yellow" href="#">
+          <a className="yellow">
             <span>+</span>Nova Análise
           </a>
-          <a href="#">
+          <a>
             <img src={ChatTextIcon} alt="Chat" />Nxo Ética
           </a>
-          <a href="#">
+          <a>
             <img src={ChatTextIcon} alt="Chat" />Impacto Nxo
           </a>
         </div>
         <div className="bottom">
-          <a href="#">
+          <a>
             <img src={TrashIcon} alt="Lixeira" />Apagar Análises
           </a>
-          <a href="#">
+          <a >
             <img src={IconSet} alt="Modo Claro" />Modo Claro
           </a>
-          <a href="#">
+          <a >
             <img src={UserIcon} alt="Usuário" />Minha Conta
           </a>
-          <a href="#">
+          <a>
             <img src={IconSet1} alt="Atualizações" />Atualizações
           </a>
-          <a href="#">
+          <a>
             <img src={SignOutIcon} alt="Sair" />Sair
           </a>
         </div>
