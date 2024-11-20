@@ -24,7 +24,7 @@ const Navbar = () => {
       {/* Menu lateral */}
       <div className={`left ${isMenuActive ? 'active' : ''}`}>
         <div className="top">
-          <a href="#" className="yellow">
+          <a className="yellow" href="#">
             <span>+</span>Nova Análise
           </a>
           <a href="#">
