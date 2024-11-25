@@ -3,23 +3,21 @@ import axios from "axios";
 import Navbar from "./components/Navbar";
 import UploadSection from "./components/UploadSection";
 import AnalysisSection from "./components/AnalysisSection";
-import LoadingMessage from "./components/LoadingMessage";
 import "./App.css";
 
 const App = () => {
   const [pdfFile, setPdfFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [lastAnalysis, setLastAnalysis] = useState(null);
-  const [isAnalysisComplete, setIsAnalysisComplete] = useState(false);
-
+  const [analysisResult, setAnalysisResult] = useState(null);
   const handleFileChange = (event) => {
     setPdfFile(event.target.files[0]);
     setErrorMessage(null);
-    setIsAnalysisComplete(false);
+    setAnalysisResult(null);
   };
 
-  const handleSubmit = async (event) => {
+
+  const handleAnalyze = async (event) => {
     event.preventDefault();
 
     if (!pdfFile) {
@@ -28,7 +26,6 @@ const App = () => {
     }
 
     setIsLoading(true);
-    setIsAnalysisComplete(false);
 
     const formData = new FormData();
     formData.append("pdf", pdfFile);
@@ -39,7 +36,11 @@ const App = () => {
       });
 
       if (response.data.success) {
-        fetchLastAnalysis();
+        setAnalysisResult({
+          pdfText: response.data.pdfText,
+          suggestion: response.data.suggestion,
+          pdfUrl: response.data.pdfUrl,
+        });
       } else {
         setErrorMessage("Erro ao processar o PDF. Tente novamente.");
       }
@@ -51,42 +52,28 @@ const App = () => {
     }
   };
 
-  const fetchLastAnalysis = async () => {
-    try {
-      const response = await axios.get("https://projetoresidenciallm.onrender.com/latest-analysis");
-      if (response.data.success) {
-        setLastAnalysis(response.data.analysis);
-        setIsAnalysisComplete(true);
-      } else {
-        console.error("Erro ao buscar a última análise:", response.data.message);
-      }
-    } catch (error) {
-      console.error("Erro ao buscar a última análise:", error);
-    }
-  };
-
-  // Função para voltar à tela de upload
-  const handleGoBack = () => {
-    setIsAnalysisComplete(false); // Exibe novamente a tela de upload
-    setPdfFile(null); // Limpa o arquivo PDF
-    setErrorMessage(null); // Limpa a mensagem de erro, se houver
+  const handleDiscard = () => {
+    setAnalysisResult(null);
+    setPdfFile(null);
   };
 
   return (
     <div className="app">
       <Navbar />
       <div className="right">
-        {!isAnalysisComplete ? (
+        {!analysisResult ? (
           <UploadSection
-            handleSubmit={handleSubmit}
+            handleSubmit={handleAnalyze}
             handleFileChange={handleFileChange}
             isLoading={isLoading}
             errorMessage={errorMessage}
           />
         ) : (
-          <AnalysisSection lastAnalysis={lastAnalysis} goBack={handleGoBack} />
+          <AnalysisSection
+            analysisResult={analysisResult}
+            handleDiscard={handleDiscard}
+          />
         )}
-        {isLoading && <LoadingMessage />}
       </div>
     </div>
   );
