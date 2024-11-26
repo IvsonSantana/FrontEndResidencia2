@@ -33,7 +33,7 @@ const App = () => {
     formData.append("pdf", pdfFile);
 
     try {
-      const response = await axios.post("http://localhost:3000/analyze-pdf", formData, {
+      const response = await axios.post("https://projetoresidenciallm.onrender.com/analyze-pdf", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -63,7 +63,7 @@ const handleSave = async () => {
   }
 
   try {
-    const response = await axios.post("http://localhost:3000/save-analysis", {
+    const response = await axios.post("https://projetoresidenciallm.onrender.com/save-analysis", {
       suggestion: analysisResult.suggestion,
     });
 
