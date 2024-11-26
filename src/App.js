@@ -10,13 +10,15 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [analysisResult, setAnalysisResult] = useState(null);
+
+  // Função para lidar com a mudança de arquivo
   const handleFileChange = (event) => {
     setPdfFile(event.target.files[0]);
     setErrorMessage(null);
     setAnalysisResult(null);
   };
 
-
+  // Função para analisar o PDF
   const handleAnalyze = async (event) => {
     event.preventDefault();
 
@@ -31,7 +33,7 @@ const App = () => {
     formData.append("pdf", pdfFile);
 
     try {
-      const response = await axios.post("https://projetoresidenciallm.onrender.com/analyze-pdf", formData, {
+      const response = await axios.post("http://localhost:3000/analyze-pdf", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -39,7 +41,7 @@ const App = () => {
         setAnalysisResult({
           pdfText: response.data.pdfText,
           suggestion: response.data.suggestion,
-          pdfUrl: response.data.pdfUrl,
+          pdfUrl: response.data.pdfUrl, // URL do PDF gerado
         });
       } else {
         setErrorMessage("Erro ao processar o PDF. Tente novamente.");
@@ -52,6 +54,34 @@ const App = () => {
     }
   };
 
+  // Função para salvar a análise
+  // Função para salvar a análise
+const handleSave = async () => {
+  if (!analysisResult) {
+    setErrorMessage("Nenhum resultado de análise para salvar.");
+    return;
+  }
+
+  try {
+    const response = await axios.post("http://localhost:3000/save-analysis", {
+      suggestion: analysisResult.suggestion,
+    });
+
+    if (response.data.success) {
+      alert("Análise salva com sucesso!");
+      // Recarrega a página após o salvamento
+      window.location.reload();
+    } else {
+      setErrorMessage("Erro ao salvar a análise. Tente novamente.");
+    }
+  } catch (error) {
+    console.error("Erro ao salvar a análise:", error);
+    setErrorMessage("Erro ao salvar a análise. Tente novamente.");
+  }
+};
+
+
+  // Função para descartar a análise
   const handleDiscard = () => {
     setAnalysisResult(null);
     setPdfFile(null);
@@ -71,6 +101,7 @@ const App = () => {
         ) : (
           <AnalysisSection
             analysisResult={analysisResult}
+            handleSave={handleSave}
             handleDiscard={handleDiscard}
           />
         )}
